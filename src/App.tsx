@@ -2,11 +2,18 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import close from './close.svg'
 
+interface Card {
+	front: string
+	back: string
+	pronunciation: string
+	isReversed: boolean
+}
+
 const App = () => {
-	const [front, setFront] = useState('')
-	const [back, setBack] = useState('')
-	const [pronunciation, setPronunciation] = useState('')
-	const [cards, setCards] = useState([])
+	const [front, setFront] = useState<string>('')
+	const [back, setBack] = useState<string>('')
+	const [pronunciation, setPronunciation] = useState<string>('')
+	const [cards, setCards] = useState<Card[]>([])
 
 	useEffect(() => {
 		const savedCards = localStorage.getItem('cards')
@@ -30,12 +37,12 @@ const App = () => {
 		setPronunciation('')
 	}
 
-	const onDelete = index => {
+	const onDelete = (index: number) => {
 		const newCards = cards.filter((card, i) => i !== index)
 		setCards(newCards)
 	}
 
-	const onReverse = index => {
+	const onReverse = (index: number) => {
 		const newCards = cards.map((card, i) =>
 			i === index ? { ...card, isReversed: !card.isReversed } : card
 		)
