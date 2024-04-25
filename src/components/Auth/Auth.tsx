@@ -1,64 +1,69 @@
 import LeftArrowIcon from '@/assets/icons/LeftArrowIcon'
+import { validateForm } from '@/helpers/validateForm'
 import AuthService from '@/service/authService'
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardHeader } from '../ui/card'
 
-interface InputValue {
+export interface AuthProps {
 	fullName: string
 	username: string
 	password: string
-	confirmPassword: string
+	confirmPassword?: string
 }
 
 const Auth = () => {
 	const { pathname } = useLocation()
-	//get input value in state
-	const [inputValue, setInputValue] = useState<InputValue>({
-		fullName: '',
-		username: '',
-		password: '',
-		confirmPassword: '',
-	})
+	const [errorMsg, setErrorMsg] = useState('')
+	const navigate = useNavigate()
 
-	const postData = async () => {
+	const postData = async (authData: AuthProps) => {
+		const { fullName, username, password } = authData
 		try {
 			if (pathname === '/signin') {
-				const { username, password } = inputValue
 				const result = await AuthService.signIn({ username, password })
 				console.log(result)
 			} else {
-				const { fullName, username, password, confirmPassword } = inputValue
-				if (password !== confirmPassword) {
-					console.log('Password and confirm password must be same')
-					return
-				}
 				const res = await AuthService.signUp({
 					full_name: fullName,
 					username,
 					password,
 				})
-				console.log(res)
+				console.log(res.token)
+
+				if (res.token) {
+					localStorage.setItem('token', res.token)
+					//redirect to dashboard page
+					navigate('/dashboard')
+				}
+				setErrorMsg('')
 			}
-		} catch (error) {
-			console.log(error)
+		} catch (error: any) {
+			setErrorMsg(error.response.data.errors[0].detail)
 		}
 	}
 
 	const handleData = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const [fullName, email, passsword, confirmPassword] = e.target as any
-		setInputValue({
-			fullName: fullName.value,
-			username: email.value,
-			password: passsword.value,
-			confirmPassword: confirmPassword.value,
-		})
-		postData()
-	}
+		const [fullName, username, password, confirmPassword] = e.target as any
 
-	const inputStyle =
-		'w-full bg-transparent p-2 rounded-md mb-2 border focus:outline-none focus:ring-2 focus:ring-blue-500'
+		//validate form data
+
+		let authData = {
+			fullName: fullName.value,
+			username: username.value,
+			password: password.value,
+			confirmPassword: confirmPassword?.value || '',
+		}
+		const errors = validateForm(authData)
+		if (errors.length > 0) {
+			setErrorMsg(errors[0])
+			return
+		}
+
+		postData(authData)
+		setErrorMsg('')
+	}
 
 	return (
 		<div className='container h-screen flex justify-center items-center'>
@@ -68,11 +73,11 @@ const Auth = () => {
 						<div className='absolute left-0 z-10'>
 							<Link to={'/'} className='flex items-center gap-1'>
 								<LeftArrowIcon className='text-blue-500' />
-								<span>back</span>
+								<span>Back</span>
 							</Link>
 						</div>
 						<h2 className='font-bold text-xl'>
-							{pathname === '/signin' ? 'Sign In' : 'Sign Up'}
+							{pathname === '/signin' ? 'Sign in' : 'Sign up'}
 						</h2>
 					</div>
 				</CardHeader>
@@ -81,38 +86,28 @@ const Auth = () => {
 						{
 							// Show full name input only on sign up
 							pathname === '/signup' && (
-								<input
-									name='fullName'
-									type='text'
-									placeholder='full name'
-									className={inputStyle}
-								/>
+								<FormInput name='fullName' label='full name' type='text' />
 							)
 						}
-						<input
-							name='username'
-							type='text'
-							placeholder='username or email'
-							className={inputStyle}
-						/>
-						<input
-							name='passsword'
-							type='password'
-							placeholder='password'
-							className={inputStyle}
-						/>
+						<FormInput name='username' type='text' label='username or email' />
+
+						<FormInput name='password' type='password' label='password' />
+
 						{
 							// Show confirm password input only on sign up
 							pathname === '/signup' && (
-								<input
+								<FormInput
 									name='confirmPassword'
 									type='password'
-									placeholder='confirm password'
-									className={inputStyle}
+									label='confirm password'
 								/>
 							)
 						}
-
+						{errorMsg && (
+							<div className='text-red-500 text-sm font-semibold'>
+								{errorMsg}
+							</div>
+						)}
 						<button
 							type='submit'
 							className='w-full bg-blue-500 text-white py-2 rounded-md mt-2'
@@ -127,3 +122,24 @@ const Auth = () => {
 }
 
 export default Auth
+
+type TformInput = {
+	label: string
+	type: string
+	name: string
+}
+
+const FormInput = ({ label, type, name }: TformInput) => {
+	return (
+		<div>
+			<label htmlFor={label}>{label}</label>
+			<input
+				className='w-full mt-1 bg-transparent p-2 rounded-md mb-2 border focus:outline-none focus:ring-2 focus:ring-blue-500'
+				type={type}
+				id={label}
+				name={name}
+				placeholder='...'
+			/>
+		</div>
+	)
+}
