@@ -1,6 +1,7 @@
-import Home from '@/pages/Home'
-import Dashboard from '@/pages/Dashboard'
+import AuthPage from '@/pages/Auth'
 import Cards from '@/pages/Cards'
+import Dashboard from '@/pages/Dashboard'
+import Home from '@/pages/Home'
 import Todo from '@/pages/Todo.tsx'
 
 interface Routes {
@@ -34,5 +35,17 @@ export const routes: Routes[] = [
 		title: 'todo',
 		path: '/todo',
 		element: <Todo />,
+	},
+	{
+		id: 5,
+		title: 'sign in',
+		path: '/signin',
+		element: <AuthPage />,
+	},
+	{
+		id: 6,
+		title: 'sign up',
+		path: '/signup',
+		element: <AuthPage />,
 	},
 ]

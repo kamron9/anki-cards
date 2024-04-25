@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Header from '../Header'
 
 const Intro = () => {
@@ -9,9 +10,11 @@ const Intro = () => {
 					Welcome to Powerfull <br />
 					<span className='text-blue-500'>Anki Flash Cards</span>
 				</h1>
-				<button className='bg-blue-500 text-md md:text-2xl py-3 px-5 rounded-md mt-4 text-white'>
-					Get started
-				</button>
+				<Link to={'/signup'}>
+					<button className='bg-blue-500 text-md md:text-2xl py-3 px-5 rounded-md mt-4 text-white'>
+						Get started
+					</button>
+				</Link>
 			</div>
 		</section>
 	)

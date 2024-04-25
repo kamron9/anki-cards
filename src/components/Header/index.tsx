@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Button } from '../ui/button'
 import ThemeSwitcher from './ThemeSwitcher'
 
@@ -7,7 +8,9 @@ const Header = () => {
 			<h1 className='font-bold'>Ankicard</h1>
 			<div className='flex item-center gap-2'>
 				<ThemeSwitcher />
-				<Button>Register</Button>
+				<Link to={'/signin'}>
+					<Button>login</Button>
+				</Link>
 			</div>
 		</header>
 	)
