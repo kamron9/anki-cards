@@ -1,5 +1,4 @@
 import LeftArrowIcon from '@/assets/icons/LeftArrowIcon'
-import { validateForm } from '@/helpers/validateForm'
 import AuthService from '@/service/authService'
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -19,10 +18,15 @@ const Auth = () => {
 
 	const postData = async (authData: AuthProps) => {
 		const { fullName, username, password } = authData
+
 		try {
 			if (pathname === '/signin') {
 				const result = await AuthService.signIn({ username, password })
-				console.log(result)
+
+				if (result.token) {
+					localStorage.setItem('token', result.token)
+					navigate('/dashboard')
+				}
 			} else {
 				const res = await AuthService.signUp({
 					full_name: fullName,
@@ -45,24 +49,25 @@ const Auth = () => {
 
 	const handleData = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		const [fullName, username, password, confirmPassword] = e.target as any
+		const element = e.target.elements as any
 
-		//validate form data
+		let authData = {}
 
-		let authData = {
-			fullName: fullName.value,
-			username: username.value,
-			password: password.value,
-			confirmPassword: confirmPassword?.value || '',
-		}
-		const errors = validateForm(authData)
-		if (errors.length > 0) {
-			setErrorMsg(errors[0])
-			return
+		if (pathname === '/signin') {
+			authData = {
+				username: element[0].value,
+				password: element[1].value,
+			}
+		} else {
+			authData = {
+				fullName: element[0].value,
+				username: element[1].value,
+				password: element[2].value,
+				confirmPassword: element[3].value,
+			}
 		}
 
 		postData(authData)
-		setErrorMsg('')
 	}
 
 	return (
@@ -131,7 +136,7 @@ type TformInput = {
 
 const FormInput = ({ label, type, name }: TformInput) => {
 	return (
-		<div>
+		<>
 			<label htmlFor={label}>{label}</label>
 			<input
 				className='w-full mt-1 bg-transparent p-2 rounded-md mb-2 border focus:outline-none focus:ring-2 focus:ring-blue-500'
@@ -139,7 +144,8 @@ const FormInput = ({ label, type, name }: TformInput) => {
 				id={label}
 				name={name}
 				placeholder='...'
+				required
 			/>
-		</div>
+		</>
 	)
 }
