@@ -1,7 +1,11 @@
-import Auth from '@/components/Auth/Auth'
+import Auth from "@/components/Auth/Auth";
 
 const AuthPage = () => {
-	return <Auth />
-}
+  return (
+    <div className={"bg_wrapper"}>
+      <Auth />
+    </div>
+  );
+};
 
-export default AuthPage
+export default AuthPage;

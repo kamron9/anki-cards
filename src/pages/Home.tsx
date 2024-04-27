@@ -1,11 +1,11 @@
-import Intro from '@/components/Intro'
+import Intro from "@/components/Intro";
 
 const Home = () => {
-	return (
-		<div className='container'>
-			<Intro />
-		</div>
-	)
-}
+  return (
+    <div className="container bg_wrapper">
+      <Intro />
+    </div>
+  );
+};
 
-export default Home
+export default Home;
