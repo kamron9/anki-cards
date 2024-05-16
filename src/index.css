@@ -5,23 +5,24 @@
 
 html.light body {
 	background-color: #f9fafb;
-
 }
 html.dark body {
 	background-color: #1a202c;
-
+}
+.active {
+	@apply text-blue-500;
 }
 
-html.dark .bg_wrapper{
+html.dark .bg_wrapper {
 	background-color: #1a202c;
 	background-image: linear-gradient(#2d3748 1px, #0000 0),
-	linear-gradient(90deg, #2d3748 1px, #0000 0);
+		linear-gradient(90deg, #2d3748 1px, #0000 0);
 	background-size: 100px 100px;
 }
-html.light .bg_wrapper{
+html.light .bg_wrapper {
 	background-color: #f9fafb;
 	background-image: linear-gradient(#e5e7eb 1px, #0000 0),
-	linear-gradient(90deg, #e5e7eb 1px, #0000 0);
+		linear-gradient(90deg, #e5e7eb 1px, #0000 0);
 	background-size: 100px 100px;
 }
 

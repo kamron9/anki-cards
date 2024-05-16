@@ -11,8 +11,16 @@ interface Routes {
 	element: JSX.Element
 	isprivate: boolean
 }
+interface PublicRoutes {
+	id: number
+	title: string
+	path: string
+	element: JSX.Element
+	isprivate: boolean
+	children: Routes[]
+}
 
-export const routes: Routes[] = [
+export const publicRoutes: Routes[] = [
 	{
 		id: 1,
 		title: 'Home',
@@ -20,27 +28,7 @@ export const routes: Routes[] = [
 		element: <Home />,
 		isprivate: false,
 	},
-	{
-		id: 2,
-		title: 'Dashboard',
-		path: '/dashboard',
-		element: <Dashboard />,
-		isprivate: true,
-	},
-	{
-		id: 3,
-		title: 'Cards',
-		path: '/cards',
-		element: <Cards />,
-		isprivate: true,
-	},
-	{
-		id: 4,
-		title: 'todo',
-		path: '/todo',
-		element: <Todo />,
-		isprivate: true,
-	},
+
 	{
 		id: 5,
 		title: 'sign in',
@@ -54,5 +42,31 @@ export const routes: Routes[] = [
 		path: '/signup',
 		element: <AuthPage />,
 		isprivate: false,
+	},
+]
+
+export const privateRoutes: PublicRoutes[] = [
+	{
+		id: 2,
+		title: 'Dashboard',
+		path: '/dashboard',
+		element: <Dashboard />,
+		isprivate: true,
+		children: [
+			{
+				id: 3,
+				title: 'Cards',
+				path: 'cards',
+				element: <Cards />,
+				isprivate: true,
+			},
+			{
+				id: 4,
+				title: 'todo',
+				path: 'todo',
+				element: <Todo />,
+				isprivate: true,
+			},
+		],
 	},
 ]

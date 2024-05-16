@@ -1,43 +1,56 @@
 import { useAuth } from '@/context/AuthProvider'
-import { disableBrowserBackBtn } from '@/helpers/disableBrowserBackBtn'
 import AuthPage from '@/pages/Auth'
-import { routes } from '@/utils/routes'
+import CardsPage from '@/pages/Cards'
+import DashboardPage from '@/pages/Dashboard'
+import HomePage from '@/pages/Home'
+import TodoPage from '@/pages/Todo'
+
 import { useEffect } from 'react'
-import { useLocation, useNavigate, useRoutes } from 'react-router-dom'
-const Routes = () => {
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+
+const Routers = () => {
 	const token = localStorage.getItem('token')
 
 	const navigate = useNavigate()
 	const location = useLocation()
-	const { user } = useAuth()
+	const { isAuthenticated } = useAuth()
 
 	useEffect(() => {
-		if (token && location.pathname !== '/dashboard') {
-			navigate('/dashboard', { replace: true })
-			disableBrowserBackBtn()
-		} else if (
-			!token &&
+		if (
+			!isAuthenticated &&
 			location.pathname !== '/signin' &&
 			location.pathname !== '/' &&
 			location.pathname !== '/signup'
 		) {
-			navigate('/signin', { replace: true })
+			navigate('/', { replace: true })
+		} else if (
+			isAuthenticated ||
+			location.pathname === '/' ||
+			location.pathname === '/signin' ||
+			location.pathname === '/signup'
+		) {
+			navigate('/dashboard', { replace: true })
 		}
-	}, [token, location, navigate, user])
+	}, [isAuthenticated])
 
-	const routing = useRoutes(
-		routes.map(({ path, element, isprivate }) => {
-			if (isprivate && !token) {
-				return { path: '*', element: <AuthPage /> }
-			}
-			if (!isprivate && token) {
-				return { path, element }
-			}
-			return { path, element }
-		})
+	return (
+		<>
+			{isAuthenticated ? (
+				<Routes>
+					<Route path='/dashboard' element={<DashboardPage />}>
+						<Route path='cards' element={<CardsPage />} />
+						<Route path='todo' element={<TodoPage />} />
+					</Route>
+				</Routes>
+			) : (
+				<Routes>
+					<Route path='/' element={<HomePage />} />
+					<Route path='/signin' element={<AuthPage />} />
+					<Route path='/signup' element={<AuthPage />} />
+				</Routes>
+			)}
+		</>
 	)
-
-	return routing
 }
 
-export default Routes
+export default Routers

@@ -1,6 +1,6 @@
 import Intro from "@/components/Intro";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className="container bg_wrapper">
       <Intro />
@@ -8,4 +8,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

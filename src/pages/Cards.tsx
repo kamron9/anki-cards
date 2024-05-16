@@ -1,9 +1,7 @@
+import Cards from '@/components/dashboard/Cards/Cards'
 
-
-const Cards = () => {
-	return (
-		<div>Cards</div>
-	)
+const CardsPage = () => {
+	return <Cards />
 }
 
-export default Cards
+export default CardsPage

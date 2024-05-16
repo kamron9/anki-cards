@@ -1,9 +1,9 @@
 
 
-const Todo = () => {
+const TodoPage = () => {
 	return (
 		<div>Todo</div>
 	)
 }
 
-export default Todo
+export default TodoPage

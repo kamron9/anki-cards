@@ -1,6 +1,6 @@
+import CloseIcon from '@/assets/icons/CloseIcon'
 import { useEffect, useState } from 'react'
-import './App.css'
-import close from './close.svg'
+import './cards.css'
 
 interface Card {
 	front: string
@@ -9,7 +9,7 @@ interface Card {
 	isReversed: boolean
 }
 
-const App = () => {
+const Cards = () => {
 	const [front, setFront] = useState<string>('')
 	const [back, setBack] = useState<string>('')
 	const [pronunciation, setPronunciation] = useState<string>('')
@@ -77,9 +77,10 @@ const App = () => {
 					add
 				</button>
 			</div>
-			<div className='container'>
+			<div className='card-container'>
 				{cards.map((card, index) => (
 					<div
+						key={index}
 						className={`card ${card.isReversed ? 'reversed' : ''}`}
 						onClick={() => onReverse(index)}
 					>
@@ -99,7 +100,7 @@ const App = () => {
 								onDelete(index)
 							}}
 						>
-							<img src={close} alt='close' />
+							<CloseIcon />
 						</button>
 					</div>
 				))}
@@ -108,4 +109,4 @@ const App = () => {
 	)
 }
 
-export default App
+export default Cards

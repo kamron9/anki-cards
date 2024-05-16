@@ -1,76 +1,90 @@
-import AuthService from "@/service/authService";
-import { createContext, useContext, useState } from "react";
+import AuthService from '@/service/authService'
+import { createContext, useContext, useState } from 'react'
 
 export interface AuthProps {
-  fullName: string;
-  username: string;
-  password: string;
+	fullName: string
+	username: string
+	password: string
 }
 //fix this bug
 
 interface loginProps {
-  username: string;
-  password: string;
+	username: string
+	password: string
 }
 
 interface AuthContextProps {
-  user: AuthProps | loginProps | null;
-  login: (authData: AuthProps) => string | void;
-  register: (authData: AuthProps) => string | void;
+	user: AuthProps | {}
+	login: (authData: loginProps) => any
+	register: (authData: AuthProps) => any
+	isAuthenticated: boolean
+	// setIsAuthenticated: (isAuthenticated: boolean) => void
 }
 
 const AuthContext = createContext<AuthContextProps>({
-  user: null,
-  login: () => {},
-  register: () => {},
-});
+	user: {},
+	login: () => {},
+	register: () => {},
+	isAuthenticated: false,
+	// setIsAuthenticated: () => {},
+})
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)
 
 //create type for AuthProvider
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+	children: React.ReactNode
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<AuthProps | loginProps | null>(null);
+	const [user, setUser] = useState<AuthProps | {}>({})
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+		localStorage.getItem('token') ? true : false
+	)
 
-  // for login
-  const login = async ({ username, password }: loginProps) => {
-    try {
-      const res = await AuthService.signIn({ username, password });
+	// for login
+	const login = async ({ username, password }: loginProps) => {
+		try {
+			const res = await AuthService.signIn({ username, password })
 
-      if (res.token) {
-        localStorage.setItem("token", res.token);
-        setUser({ username, password });
-      }
-    } catch (error: any) {
-      return error.response.data.errors[0].detail;
-    }
-  };
-  // for register
-  const register = async ({ fullName, username, password }: AuthProps) => {
-    try {
-      const res = await AuthService.signUp({
-        full_name: fullName,
-        username,
-        password,
-      });
+			if (res.token) {
+				console.log(res)
 
-      if (res.token) {
-        localStorage.setItem("token", res.token);
-        setUser({ fullName, username, password });
-      }
-    } catch (error: any) {
-      return error.response.data.errors[0].detail;
-    }
-  };
-  return (
-    <AuthContext.Provider value={{ user, login, register }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+				localStorage.setItem('token', res.token)
+				localStorage.setItem('user', JSON.stringify(res))
+				setUser({ username, password, fullName: res.full_name })
+				setIsAuthenticated(true)
+			}
+		} catch (error: any) {
+			setIsAuthenticated(false)
+			return error.response.data.errors[0].detail
+		}
+	}
+	// for register
+	const register = async ({ fullName, username, password }: AuthProps) => {
+		try {
+			const res = await AuthService.signUp({
+				full_name: fullName,
+				username,
+				password,
+			})
 
-export default AuthProvider;
+			if (res.token) {
+				localStorage.setItem('token', res.token)
+				setUser({ fullName, username, password })
+				setIsAuthenticated(true)
+			}
+		} catch (error: any) {
+			setIsAuthenticated(false)
+			return error.response.data.errors[0].detail
+		}
+	}
+	return (
+		<AuthContext.Provider value={{ user, login, register, isAuthenticated }}>
+			{children}
+		</AuthContext.Provider>
+	)
+}
+
+export default AuthProvider
