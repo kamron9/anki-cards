@@ -1,3 +1,4 @@
+import Layout from '@/components/dashboard/Layout'
 import { useAuth } from '@/context/AuthProvider'
 import AuthPage from '@/pages/Auth'
 import CardsPage from '@/pages/Cards'
@@ -9,8 +10,6 @@ import { useEffect } from 'react'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 const Routers = () => {
-	const token = localStorage.getItem('token')
-
 	const navigate = useNavigate()
 	const location = useLocation()
 	const { isAuthenticated } = useAuth()
@@ -24,12 +23,13 @@ const Routers = () => {
 		) {
 			navigate('/', { replace: true })
 		} else if (
-			isAuthenticated ||
-			location.pathname === '/' ||
+			(isAuthenticated && location.pathname === '/') ||
 			location.pathname === '/signin' ||
 			location.pathname === '/signup'
 		) {
-			navigate('/dashboard', { replace: true })
+			navigate('/dashboard')
+		} else {
+			return
 		}
 	}, [isAuthenticated])
 
@@ -37,9 +37,10 @@ const Routers = () => {
 		<>
 			{isAuthenticated ? (
 				<Routes>
-					<Route path='/dashboard' element={<DashboardPage />}>
-						<Route path='cards' element={<CardsPage />} />
-						<Route path='todo' element={<TodoPage />} />
+					<Route element={<Layout />}>
+						<Route path='/dashboard' element={<DashboardPage />} />
+						<Route path='/cards' element={<CardsPage />} />
+						<Route path='/todo' element={<TodoPage />} />
 					</Route>
 				</Routes>
 			) : (

@@ -22,15 +22,12 @@ const Cards = () => {
 		}
 	}, [])
 
-	useEffect(() => {
-		localStorage.setItem('cards', JSON.stringify(cards))
-	}, [cards])
-
 	const onAdd = () => {
 		const newCards = [
 			{ front, back, pronunciation, isReversed: false },
 			...cards,
 		]
+		localStorage.setItem('cards', JSON.stringify(newCards))
 		setCards(newCards)
 		setFront('')
 		setBack('')

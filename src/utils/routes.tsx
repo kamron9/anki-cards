@@ -3,6 +3,7 @@ import Cards from '@/pages/Cards'
 import Dashboard from '@/pages/Dashboard'
 import Home from '@/pages/Home'
 import Todo from '@/pages/Todo.tsx'
+import { LayoutDashboard, ListTodo, SquareAsterisk } from 'lucide-react'
 
 interface Routes {
 	id: number
@@ -17,7 +18,7 @@ interface PublicRoutes {
 	path: string
 	element: JSX.Element
 	isprivate: boolean
-	children: Routes[]
+	icon: JSX.Element
 }
 
 export const publicRoutes: Routes[] = [
@@ -52,21 +53,22 @@ export const privateRoutes: PublicRoutes[] = [
 		path: '/dashboard',
 		element: <Dashboard />,
 		isprivate: true,
-		children: [
-			{
-				id: 3,
-				title: 'Cards',
-				path: 'cards',
-				element: <Cards />,
-				isprivate: true,
-			},
-			{
-				id: 4,
-				title: 'todo',
-				path: 'todo',
-				element: <Todo />,
-				isprivate: true,
-			},
-		],
+		icon: <LayoutDashboard />,
+	},
+	{
+		id: 3,
+		title: 'Cards',
+		path: 'cards',
+		element: <Cards />,
+		isprivate: true,
+		icon: <SquareAsterisk />,
+	},
+	{
+		id: 4,
+		title: 'todo',
+		path: 'todo',
+		element: <Todo />,
+		isprivate: true,
+		icon: <ListTodo />,
 	},
 ]
