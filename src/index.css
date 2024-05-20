@@ -147,7 +147,7 @@ html {
 .card {
 	perspective: 1000px;
 	width: 100%;
-	height: 200px;
+	height: 150px;
 	position: relative;
 	padding: 5px;
 }
@@ -178,7 +178,7 @@ html {
 	flex-direction: column;
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 .card .back {
@@ -219,7 +219,7 @@ html {
 }
 
 .pronunciation {
-	font-size: 16px;
+	font-size: 13px;
 	margin-top: 10px;
 	color: rgba(121, 118, 118, 0.68);
 }
