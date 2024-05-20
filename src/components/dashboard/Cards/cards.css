@@ -1,12 +1,4 @@
-.wrapper {
-	max-width: 1200px;
 
-	margin: 0 auto;
-}
-.form {
-	display: flex;
-	flex-wrap: wrap;
-}
 .front-input,
 .back-input,
 .pronunciation-input {
@@ -31,12 +23,7 @@
 	color: white;
 	border: none;
 }
-.card-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 10px;
-	padding: 10px;
-}
+
 
 .card {
 	perspective: 1000px;
@@ -116,9 +103,6 @@
 }
 
 @media (max-width: 768px) {
-	.container {
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	}
 	.card {
 		height: 100px;
 	}

@@ -1,4 +1,4 @@
-import { AuthProps } from '@/components/Auth/Auth'
+import { AuthProps } from '@/components/Form/AuthForm'
 
 export const validateForm = (data: AuthProps) => {
 	let errors = []

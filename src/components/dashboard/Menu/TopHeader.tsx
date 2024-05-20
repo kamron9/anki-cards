@@ -1,5 +1,5 @@
 import ThemeSwitcher from '@/components/Header/ThemeSwitcher'
-
+import { memo } from 'react'
 const TopHeader = () => {
 	const user = JSON.parse(localStorage.getItem('user') || '')
 	console.log(user)
@@ -14,4 +14,4 @@ const TopHeader = () => {
 	)
 }
 
-export default TopHeader
+export default memo(TopHeader)

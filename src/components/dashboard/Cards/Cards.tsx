@@ -1,109 +1,51 @@
-import CloseIcon from '@/assets/icons/CloseIcon'
-import { useEffect, useState } from 'react'
-import './cards.css'
-
-interface Card {
-	front: string
-	back: string
-	pronunciation: string
-	isReversed: boolean
-}
+import CloseIcon from "@/assets/icons/CloseIcon";
+import CardForm from "@/components/Form/CardForm";
+import { CardType, useCard } from "@/context/CardProvider";
+import { Card, CardContent } from "@/components/ui/card.tsx";
 
 const Cards = () => {
-	const [front, setFront] = useState<string>('')
-	const [back, setBack] = useState<string>('')
-	const [pronunciation, setPronunciation] = useState<string>('')
-	const [cards, setCards] = useState<Card[]>([])
+  const { cards, onReverse, removeCard } = useCard();
 
-	useEffect(() => {
-		const savedCards = localStorage.getItem('cards')
-		if (savedCards) {
-			setCards(JSON.parse(savedCards))
-		}
-	}, [])
+  const onDelete = (card: CardType) => {
+    removeCard(card);
+  };
+  return (
+    <div className={"p-4"}>
+      <CardForm />
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
+        {cards.map((card) => (
+          <Card
+            key={card.id}
+            className={`card border-none overflow-hidden ${
+              card.isReversed ? "reversed" : ""
+            }  bg-transparent`}
+            onClick={() => onReverse(card.id)}
+          >
+            <div className="card-inner bg-[var(--card-light)] dark:bg-[var(--card-dark)] dark:text-[var(--card-light)]">
+              <CardContent className="front p-0 overflow-hidden border rounded-[12px] border-[rgba(74,72,72,0.285)] ">
+                {card.front}
+                {card.pronunciation && (
+                  <div className="pronunciation">({card.pronunciation})</div>
+                )}
+              </CardContent>
+              <CardContent className="back p-0 overflow-hidden border rounded-[12px] border-[rgba(74,72,72,0.285)]">
+                {card.back}
+              </CardContent>
+            </div>
+            <button
+              className="delete-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(card);
+              }}
+            >
+              <CloseIcon />
+            </button>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
 
-	const onAdd = () => {
-		const newCards = [
-			{ front, back, pronunciation, isReversed: false },
-			...cards,
-		]
-		localStorage.setItem('cards', JSON.stringify(newCards))
-		setCards(newCards)
-		setFront('')
-		setBack('')
-		setPronunciation('')
-	}
-
-	const onDelete = (index: number) => {
-		const newCards = cards.filter((card, i) => i !== index)
-		setCards(newCards)
-	}
-
-	const onReverse = (index: number) => {
-		const newCards = cards.map((card, i) =>
-			i === index ? { ...card, isReversed: !card.isReversed } : card
-		)
-		setCards(newCards)
-	}
-
-	return (
-		<div className='wrapper'>
-			<div className='form'>
-				<input
-					className='front-input'
-					value={front}
-					type='text'
-					placeholder='front'
-					onChange={e => setFront(e.target.value)}
-				/>
-				<input
-					className='back-input'
-					value={back}
-					type='text'
-					placeholder='back'
-					onChange={e => setBack(e.target.value)}
-				/>
-				<input
-					className='pronunciation-input'
-					value={pronunciation}
-					type='text'
-					placeholder='pronunciation'
-					onChange={e => setPronunciation(e.target.value)}
-				/>
-				<button className='add-button' onClick={onAdd}>
-					add
-				</button>
-			</div>
-			<div className='card-container'>
-				{cards.map((card, index) => (
-					<div
-						key={index}
-						className={`card ${card.isReversed ? 'reversed' : ''}`}
-						onClick={() => onReverse(index)}
-					>
-						<div className='card-inner'>
-							<div className='front'>
-								{card.front}
-								{card.pronunciation && (
-									<div className='pronunciation'>({card.pronunciation})</div>
-								)}
-							</div>
-							<div className='back'>{card.back}</div>
-						</div>
-						<button
-							className='delete-button'
-							onClick={e => {
-								e.stopPropagation()
-								onDelete(index)
-							}}
-						>
-							<CloseIcon />
-						</button>
-					</div>
-				))}
-			</div>
-		</div>
-	)
-}
-
-export default Cards
+export default Cards;
