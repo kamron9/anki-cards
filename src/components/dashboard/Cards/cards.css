@@ -1,20 +1,11 @@
-body {
-	font-family: sans-serif;
-}
-.wrapper {
-	max-width: 1200px;
 
-	margin: 0 auto;
-}
-.form {
-	display: flex;
-	flex-wrap: wrap;
-}
 .front-input,
 .back-input,
 .pronunciation-input {
 	padding: 10px;
 	margin-bottom: 10px;
+	border: 1px solid rgba(74, 72, 72, 0.285);
+	background-color: transparent;
 }
 .front-input,
 .back-input,
@@ -32,12 +23,7 @@ body {
 	color: white;
 	border: none;
 }
-.container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 10px;
-	padding: 10px;
-}
+
 
 .card {
 	perspective: 1000px;
@@ -53,7 +39,7 @@ body {
 	position: relative;
 	transition: transform 0.6s;
 	transform-style: preserve-3d;
-	border: 1px solid black;
+	border: 1px solid rgba(74, 72, 72, 0.285);
 	border-radius: 12px;
 }
 
@@ -117,9 +103,6 @@ body {
 }
 
 @media (max-width: 768px) {
-	.container {
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	}
 	.card {
 		height: 100px;
 	}
