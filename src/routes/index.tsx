@@ -28,10 +28,8 @@ const Routers = () => {
       location.pathname === "/signin" ||
       location.pathname === "/signup"
     ) {
-      navigate("/dashboard",{replace:true});
-    } else {
-      return;
-    }
+      navigate("/dashboard",{ replace: true });
+    } 
   }, [isAuthenticated]);
 
   return (
