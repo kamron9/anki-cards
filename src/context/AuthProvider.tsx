@@ -18,7 +18,6 @@ interface AuthContextProps {
 	login: (authData: loginProps) => any
 	register: (authData: AuthProps) => any
 	isAuthenticated: boolean
-	// setIsAuthenticated: (isAuthenticated: boolean) => void
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -26,7 +25,6 @@ const AuthContext = createContext<AuthContextProps>({
 	login: () => {},
 	register: () => {},
 	isAuthenticated: false,
-	// setIsAuthenticated: () => {},
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -49,8 +47,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			const res = await AuthService.signIn({ username, password })
 
 			if (res.token) {
-				console.log(res)
-
 				localStorage.setItem('token', res.token)
 				localStorage.setItem('user', JSON.stringify(res))
 				setUser({ username, password, fullName: res.full_name })
@@ -72,6 +68,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 			if (res.token) {
 				localStorage.setItem('token', res.token)
+				localStorage.setItem('user', JSON.stringify(res))
 				setUser({ fullName, username, password })
 				setIsAuthenticated(true)
 			}
