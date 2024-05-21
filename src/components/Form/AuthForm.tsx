@@ -27,9 +27,8 @@ const Auth = () => {
 		}
 	}
 
-	const handleData = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleData = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-
 		postData()
 	}
 
