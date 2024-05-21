@@ -28,7 +28,7 @@ const Routers = () => {
       location.pathname === "/signin" ||
       location.pathname === "/signup"
     ) {
-      navigate("/dashboard",{replace:true);
+      navigate("/dashboard",{replace:true});
     } else {
       return;
     }
