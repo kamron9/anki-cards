@@ -22,6 +22,7 @@ const Routers = () => {
 	const { isAuthenticated } = useAuth()
 	const unauthenticatedPaths = ['/', '/signin', '/signup']
 
+
 	useEffect(() => {
 		if (
 			(isAuthenticated && location.pathname === '/') ||
@@ -30,6 +31,7 @@ const Routers = () => {
 			navigate('/', { replace: true })
 		}
 	}, [isAuthenticated, location.pathname, navigate])
+
 
 	useEffect(() => {
 		if (isAuthenticated && location.pathname === '/') {
