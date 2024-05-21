@@ -8,7 +8,13 @@ import TodoPage from '@/pages/Todo'
 
 import { Toaster } from '@/components/ui/toaster.tsx'
 import { useEffect } from 'react'
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import {
+	Navigate,
+	Route,
+	Routes,
+	useLocation,
+	useNavigate,
+} from 'react-router-dom'
 
 const Routers = () => {
 	const navigate = useNavigate()
@@ -26,7 +32,7 @@ const Routers = () => {
 	}, [isAuthenticated, location.pathname, navigate])
 
 	useEffect(() => {
-		if (isAuthenticated) {
+		if (isAuthenticated && location.pathname === '/') {
 			navigate('/dashboard')
 		}
 	}, [isAuthenticated])
@@ -39,6 +45,10 @@ const Routers = () => {
 						<Route path='/dashboard' element={<DashboardPage />} />
 						<Route path='/cards' element={<CardsPage />} />
 						<Route path='/todo' element={<TodoPage />} />
+						<Route
+							path='*'
+							element={<Navigate to={'/dashboard'} replace={true} />}
+						/>
 					</Route>
 				</Routes>
 			) : (
