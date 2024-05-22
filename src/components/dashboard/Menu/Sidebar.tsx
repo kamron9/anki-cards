@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 const Sidebar = () => {
 	return (
-		<aside className='w-[300px] hidden md:block border-r h-screen border-gray-300 dark:border-gray-700 p-12'>
+		<aside className='w-[300px] hidden md:block border-r h-screen border-r-gray-300 dark:border-r-[var(--border-color)] p-12'>
 			{/* logo */}
 			<div>
 				<h2 className='text-blue-500 font-bold text-xl'>Ankicard</h2>
