@@ -58,6 +58,7 @@ const Routers = () => {
 					<Route path='/' element={<HomePage />} />
 					<Route path='/signin' element={<AuthPage />} />
 					<Route path='/signup' element={<AuthPage />} />
+					<Route path='*' element={<Navigate to={'/'} replace={true} />} />
 				</Routes>
 			)}
 			<Toaster />

@@ -18,6 +18,7 @@ interface AuthContextProps {
 	login: (authData: loginProps) => any
 	register: (authData: AuthProps) => any
 	isAuthenticated: boolean
+	logOut: () => void
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -25,6 +26,7 @@ const AuthContext = createContext<AuthContextProps>({
 	login: () => {},
 	register: () => {},
 	isAuthenticated: false,
+	logOut: () => {},
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -54,7 +56,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			}
 		} catch (error: any) {
 			setIsAuthenticated(false)
-			return error.response.data.errors[0].detail
+			console.log(error)
 		}
 	}
 	// for register
@@ -74,11 +76,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			}
 		} catch (error: any) {
 			setIsAuthenticated(false)
-			return error.response.data.errors[0].detail
+			console.log(error)
 		}
 	}
+	const logOut = () => {
+		setIsAuthenticated(false)
+		localStorage.removeItem('token')
+		localStorage.removeItem('user')
+	}
+
 	return (
-		<AuthContext.Provider value={{ user, login, register, isAuthenticated }}>
+		<AuthContext.Provider
+			value={{ user, login, logOut, register, isAuthenticated }}
+		>
 			{children}
 		</AuthContext.Provider>
 	)
