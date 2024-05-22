@@ -23,7 +23,10 @@ html.dark body {
 .active {
 	@apply text-blue-500;
 }
-
+.bg_wrapper {
+	width: 100vw;
+	height: 100vh;
+}
 html.dark .bg_wrapper {
 	background-color: #1a202c;
 	background-image: linear-gradient(#2d3748 1px, #0000 0),
