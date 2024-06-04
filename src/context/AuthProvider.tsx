@@ -1,4 +1,5 @@
 import AuthService from '@/service/authService'
+import Cookies from 'js-cookie'
 import { createContext, useContext, useState } from 'react'
 
 export interface AuthProps {
@@ -39,8 +40,9 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [user, setUser] = useState<AuthProps | {}>({})
+
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-		localStorage.getItem('token') ? true : false
+		Cookies.get('token') ? true : false
 	)
 
 	// for login
@@ -49,8 +51,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			const res = await AuthService.signIn({ username, password })
 
 			if (res.token) {
-				localStorage.setItem('token', res.token)
-				localStorage.setItem('user', JSON.stringify(res))
+				Cookies.set('token', res.token)
+				Cookies.set('user', JSON.stringify(res))
 				setUser({ username, password, fullName: res.full_name })
 				setIsAuthenticated(true)
 			}
@@ -81,8 +83,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	}
 	const logOut = () => {
 		setIsAuthenticated(false)
-		localStorage.removeItem('token')
-		localStorage.removeItem('user')
+		Cookies.remove('token')
+		Cookies.remove('user')
 	}
 
 	return (
