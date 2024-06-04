@@ -1,7 +1,7 @@
-import AuthPage from '@/pages/Auth'
-import Cards from '@/pages/Cards'
-import Dashboard from '@/pages/Dashboard'
-import Home from '@/pages/Home'
+import AuthPage from '@/pages/AuthPage'
+import Cards from '@/pages/CardsPage'
+import Dashboard from '@/pages/DashboardPage'
+import Home from '@/pages/HomePage'
 import Todo from '@/pages/Todo.tsx'
 import { LayoutDashboard, ListTodo, SquareAsterisk } from 'lucide-react'
 
@@ -10,14 +10,13 @@ interface Routes {
 	title: string
 	path: string
 	element: JSX.Element
-	isprivate: boolean
 }
 interface PublicRoutes {
 	id: number
 	title: string
 	path: string
 	element: JSX.Element
-	isprivate: boolean
+
 	icon: JSX.Element
 }
 
@@ -27,7 +26,6 @@ export const publicRoutes: Routes[] = [
 		title: 'Home',
 		path: '/',
 		element: <Home />,
-		isprivate: false,
 	},
 
 	{
@@ -35,14 +33,12 @@ export const publicRoutes: Routes[] = [
 		title: 'sign in',
 		path: '/signin',
 		element: <AuthPage />,
-		isprivate: false,
 	},
 	{
 		id: 6,
 		title: 'sign up',
 		path: '/signup',
 		element: <AuthPage />,
-		isprivate: false,
 	},
 ]
 
@@ -52,7 +48,6 @@ export const privateRoutes: PublicRoutes[] = [
 		title: 'Dashboard',
 		path: '/dashboard',
 		element: <Dashboard />,
-		isprivate: true,
 		icon: <LayoutDashboard />,
 	},
 	{
@@ -60,7 +55,6 @@ export const privateRoutes: PublicRoutes[] = [
 		title: 'Cards',
 		path: 'cards',
 		element: <Cards />,
-		isprivate: true,
 		icon: <SquareAsterisk />,
 	},
 	{
@@ -68,7 +62,6 @@ export const privateRoutes: PublicRoutes[] = [
 		title: 'todo',
 		path: 'todo',
 		element: <Todo />,
-		isprivate: true,
 		icon: <ListTodo />,
 	},
 ]

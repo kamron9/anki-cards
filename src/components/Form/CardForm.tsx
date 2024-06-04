@@ -1,14 +1,15 @@
 import { toast } from '@/components/ui/use-toast.ts'
-import { CardType, useCard } from '@/context/CardProvider'
+import { useCard } from '@/context/CardProvider'
+import CardService from '@/service/cardService'
+import { CardType } from '@/shared/types'
 import { useState } from 'react'
-
 const CardForm = () => {
 	const [front, setFront] = useState<string>('')
 	const [back, setBack] = useState<string>('')
 	const [pronunciation, setPronunciation] = useState<string>('')
 	const { cards, addCard } = useCard()
 
-	const onAdd = () => {
+	const onAdd = async () => {
 		const newCards: CardType = {
 			id: cards.length + 1,
 			front,
@@ -28,6 +29,7 @@ const CardForm = () => {
 		setFront('')
 		setBack('')
 		setPronunciation('')
+		CardService.createCard(newCards)
 	}
 
 	const isButtonDisabled: boolean = !front || !back
@@ -64,7 +66,7 @@ const CardForm = () => {
 			<button
 				disabled={isButtonDisabled}
 				className={
-					'bg-green-700 text-white py-3 border border-green-700 rounded-md disabled:bg-green-900'
+					'bg-green-700 text-white py-3 border border-green-700 rounded-md disabled:bg-green-950'
 				}
 				onClick={onAdd}
 			>

@@ -1,4 +1,4 @@
-import Cards from '@/components/dashboard/Cards/Cards'
+import Cards from './components/Cards/Cards'
 
 const CardsPage = () => {
 	return <Cards />
